@@ -8,10 +8,9 @@ import matplotlib.pyplot as plt
 
 import tensorflow as tf
 from tensorflow.keras.layers import TextVectorization
-from tensorflow.keras.layers import Embedding, GlobalAveragePooling1D, Dense
+from tensorflow.keras.layers import Embedding, GlobalAveragePooling1D, Dense, Conv1D, MaxPooling1D, Dropout, GlobalMaxPooling1D
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.metrics import Precision, Recall, AUC
-
 
 
 # =============================================
@@ -38,8 +37,8 @@ train_ds = train_ds.fillna('')
 
 
 # Параметры векторизации
-max_tokens = 100000           # Максимальное количество уникальных слов
-output_sequence_length = 1000  # Длина последовательности после векторизации
+max_tokens = 50000           # Максимальное количество уникальных слов
+output_sequence_length = 100  # Длина последовательности после векторизации
 
 # Создаем слой векторизации для url
 url_vectorizer = TextVectorization(
@@ -78,15 +77,42 @@ y_train = train_ds['label']
 
 
 # Параметры модели
-embedding_dim = 32  # Размерность эмбеддингов
+embedding_dim = 64  # Размерность эмбеддингов
 num_classes = 1  # Бинарная классификация
 
 # Создаем модель
+# model = Sequential([
+#     Embedding(input_dim=max_tokens + 1, output_dim=embedding_dim, input_length=output_sequence_length * 2),
+#     GlobalAveragePooling1D(),
+#     Dense(16, activation='relu'),
+#     Dense(num_classes, activation='sigmoid')  # Сигмоидная функция активации для бинарной классификации
+# ])
+
+# Создаем модель
 model = Sequential([
+    # Слой эмбеддингов
     Embedding(input_dim=max_tokens + 1, output_dim=embedding_dim, input_length=output_sequence_length * 2),
-    GlobalAveragePooling1D(),
-    Dense(16, activation='relu'),
-    Dense(num_classes, activation='sigmoid')  # Сигмоидная функция активации для бинарной классификации
+
+    # Сверточный слой для захвата локальных паттернов
+    Conv1D(filters=256, kernel_size=5, activation='relu'),
+
+    # Слой пулинга для снижения размерности
+    MaxPooling1D(pool_size=4),
+
+    # Dropout для предотвращения переобучения
+    Dropout(0.5),
+
+    # Глобальный пулинг для получения фиксированного представления
+    GlobalMaxPooling1D(),
+
+    # Полносвязный слой для извлечения признаков
+    Dense(128, activation='relu'),
+
+    # Dropout перед выходным слоем
+    Dropout(0.5),
+
+    # Выходной слой для бинарной классификации
+    Dense(num_classes, activation='sigmoid')
 ])
 
 # Компилируем модель
@@ -106,17 +132,16 @@ model.compile(
 # ======================
 
 
-
 # Обучение модели
 history = model.fit(
     X_train,
     y_train,
-    epochs=5,
-    batch_size=32,
+    epochs=10,
+    batch_size=16,
     validation_split=0.1  # Используем 20% данных для валидации
 )
 
-model.save("model_3.keras")
+model.save("model_6.keras")
 
 
 

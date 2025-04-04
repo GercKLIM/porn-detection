@@ -76,7 +76,7 @@ y_train = train_ds['label']
 # =======================
 
 # Загрузка модели
-model = load_model('model_2.keras')
+model = load_model('model_5.keras')
 
 
 # ==============================

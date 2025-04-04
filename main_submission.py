@@ -77,7 +77,7 @@ if not isinstance(X_test, tf.Tensor):
 print("ЗАГРУЗКА МОДЕЛИ")
 
 # Загрузка модели
-model = load_model('model_2.keras')
+model = load_model('model_6.keras')
 print("Модель успешно загружена.")
 
 # ==============================
@@ -99,6 +99,6 @@ submission = pd.DataFrame({
 })
 
 # Сохраняем результаты в файл
-submission.to_csv('submission_2.csv', index=False)
+submission.to_csv('submission_6.csv', index=False)
 
 print("Файл submission сохранен!")
