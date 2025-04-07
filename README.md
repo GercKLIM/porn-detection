@@ -20,9 +20,9 @@
 
 ## Результаты
 Модель показала следующие метрики на валидационных данных:
-- Precision: 0.9772
-- Recall: 0.9295
-- F1-Score: 0.9527
+- Precision: 0.9814
+- Recall: 0.9623
+- F1-Score: 0.9718
 
 ## Как использовать
 1. Клонируйте репозиторий:
@@ -35,7 +35,7 @@
 
 3. Откройте и выполните Jupyter Notebook:
    ```bash
-   jupyter notebook main_notebook.ipynb
+   jupyter notebook porn-detection.ipynb
 
 ## Контакты 
 
