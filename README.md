@@ -27,7 +27,7 @@
 ## Как использовать
 1. Клонируйте репозиторий:
    ```bash
-   git clone https://github.com/your-username/porn-detection.git
+   git clone https://github.com/GercKLIM/porn-detection.git
 
 2. Установите необходимые зависимости:
    ```bash
